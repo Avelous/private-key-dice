@@ -18,6 +18,7 @@ The backend uses MongoDB for the database and Ably for real-time communication w
 
 ```plaintext
 .
+packages/backend/
 ├── controllers
 │   ├── Admin.ts
 │   └── Player.ts
