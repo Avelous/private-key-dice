@@ -40,14 +40,15 @@ packages/backend/
 
 Ensure you have the following:
 
-- Node.js 
+- Node.js
 - yarn (Node Package Manager)
 - [MongoDB Cluster](https://www.mongodb.com/)
 - [Ably Application (For realtime connection)](https://ably.com/)
 
-Setup Instructions
+### Setup Instructions
 
 1. Clone the Repository
+
 Clone the repository to your local machine using the following command:
 
 ```
@@ -69,13 +70,13 @@ Create a `.env` file in the directory `packages/backend` and add your MongoDB co
 
 ```env
 PORT=6001
-MONGO_URL=your_mongo_connection_string
+MONGODB_URI=your_mongodb_connection_string
 ABLY_API_KEY=your_ably_api_key
 ```
 
 Alternatively, you can stick with values of `backend.config.ts` for testing
 
-- Get a `mongo_url` by signing up at [MongoDB](https://www.mongodb.com/) and creating an cluster. [Learn More](https://www.mongodb.com/docs/drivers/node/v3.6/fundamentals/connection/connect/)
+- Get a `mongodb_uri` by signing up at [MongoDB](https://www.mongodb.com/) and creating an cluster. [Learn More](https://www.mongodb.com/docs/drivers/node/v3.6/fundamentals/connection/connect/)
 - Get an `ablyApiKey` by signing up at [Ably](https://ably.com/) and creating an application. [Learn More](https://ably.com/docs/connect)
 
 4. Run the Server
@@ -93,18 +94,17 @@ The complete setup is in `packages/backend/index.ts`.
 
 The server uses [Mongoose](https://mongoosejs.com/docs/) to connect to MongoDB. Ensure your MongoDB URL is correctly set in the `.env` file or `backend.config.ts`. The connection logic includes an automatic retry mechanism in case the initial connection fails.
 
-
 ```typescript
 const connectWithRetry = async () => {
   await ably.connection.once("connected");
   ably.channels.get(`gameUpdate`);
   console.log("connecting");
   mongoose
-    .connect(MONGO_URL)
+    .connect(MONGODB_URI)
     .then(() => {
       server.listen(PORT, () => console.log(`Server Connected, Port: ${PORT}`));
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(`${error} did not connect`);
       setTimeout(connectWithRetry, 3000);
     });
@@ -118,11 +118,13 @@ connectWithRetry();
 Ably is configured to publish real-time updates to the `gameUpdate` channel whenever a game state is updated. This allows clients to receive updates instantaneously.
 
 ### Backend Ably Setup
+
 The Ably client is initialized with the API key at `packages/backend/index.ts`:
 
-
 ```typescript
-export const ably = new Ably.Realtime({ key: process.env.ABLY_API_KEY || backendConfig.ablyApi });
+export const ably = new Ably.Realtime({
+  key: process.env.ABLY_API_KEY || backendConfig.ablyApiKey,
+});
 ```
 
 Whenever an API call updates the game, Ably publishes the changes:
@@ -136,7 +138,7 @@ channel.publish(`gameUpdate`, updatedGame);
 
 ### Frontend Ably Integration
 
-The frontend subscribes to the `gameUpdate` channel to receive real-time updates. Here's a React useEffect hook snippet in  `packages/nextjs/pages/game/[id].tsx` for subscribing to the updates:
+The frontend subscribes to the `gameUpdate` channel to receive real-time updates. Here's a React useEffect hook snippet in `packages/nextjs/pages/game/[id].tsx` for subscribing to the updates:
 
 ```typescript
 useEffect(() => {
@@ -144,7 +146,7 @@ useEffect(() => {
   const ably = new Ably.Realtime({ key: ablyApiKey });
   const channel = ably.channels.get(`gameUpdate`);
 
-  channel.subscribe(message => {
+  channel.subscribe((message) => {
     if (game?._id === message.data._id) {
       setGame(message.data);
       updateGameState(JSON.stringify(message.data));
@@ -165,6 +167,6 @@ useEffect(() => {
 - Middleware: Authentication logic.
 - Models: Mongoose schemas for the game model.
 - Routes: API endpoints for admin and player interactions.
-For more details on specific implementations, refer to the respective files within the project at `packages/backend`.
+  For more details on specific implementations, refer to the respective files within the project at `packages/backend`.
 
 With these instructions, you should be able to set up and run the backend server with MongoDB and Ably Realtime integration. If you encounter any issues, consult the respective documentation for [Mongoose](https://mongoosejs.com/docs/) and [Ably](https://ably.com/docs).

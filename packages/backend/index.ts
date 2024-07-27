@@ -34,7 +34,7 @@ export const ably = new Ably.Realtime({ key: process.env.ABLY_API_KEY || backend
 const server = http.createServer(app);
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || backendConfig.port;
-const MONGO_URL = process.env.MONGO_URL || backendConfig.mongo_url;
+const MONGODB_URI = process.env.MONGODB_URI || backendConfig.mongodb_uri;
 
 app.use("/admin", adminRoutes);
 app.use("/player", playerRoutes);
@@ -45,7 +45,7 @@ const connectWithRetry = async () => {
   ably.channels.get(`gameUpdate`);
   console.log("connecting");
   mongoose
-    .connect(MONGO_URL)
+    .connect(MONGODB_URI)
     .then(() => {
       // app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
       server.listen(PORT, () => console.log(`Server Connected, Port: ${PORT}`));

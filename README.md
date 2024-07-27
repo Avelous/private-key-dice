@@ -75,7 +75,7 @@ yarn install
 yarn backend
 ```
 
-This command starts a local backend on port `6001` and can be used for testing and development. You can customize the configuration in `backend.config.ts` and add your very own `.env` file following the `packages/backend/.env.example`.
+This command starts a local backend on port `6001` and can be used for testing and development. You can customize the configuration in `packages/backend/backend.config.ts` and add your very own `.env` file following the `packages/backend/.env.example`.
 
 3. On a second terminal, start your NextJS app:
 
