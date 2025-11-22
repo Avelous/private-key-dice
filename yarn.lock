@@ -2241,18 +2241,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prisma/client@npm:^6.1.0":
-  version: 6.19.0
-  resolution: "@prisma/client@npm:6.19.0"
+"@prisma/client@npm:6.2.0":
+  version: 6.2.0
+  resolution: "@prisma/client@npm:6.2.0"
   peerDependencies:
     prisma: "*"
-    typescript: ">=5.1.0"
   peerDependenciesMeta:
     prisma:
       optional: true
-    typescript:
-      optional: true
-  checksum: 10/6439b6404efb81d1379e4012ba2a819eecd030d4f776182a1f3d3bed4f161c763d7c153fd6ffe8d0389d029e84fae4c957017a944b0e32c738bc5449da7f6715
+  checksum: 10/4e29ff1d1ded820502c714b143efadd58e37534f7e7b37ed2739785a6b6e7c200469ae5af834f704999a4ba60ab334b3eebcd51db0ecdc74d35356747570e3f3
   languageName: node
   linkType: hard
 
@@ -2568,7 +2565,7 @@ __metadata:
   dependencies:
     "@ethersproject/providers": "npm:^5.7.2"
     "@heroicons/react": "npm:^2.1.5"
-    "@prisma/client": "npm:^6.1.0"
+    "@prisma/client": "npm:6.2.0"
     "@rainbow-me/rainbowkit": "npm:2.1.6"
     "@tanstack/react-query": "npm:^5.59.15"
     "@trivago/prettier-plugin-sort-imports": "npm:^4.3.0"
